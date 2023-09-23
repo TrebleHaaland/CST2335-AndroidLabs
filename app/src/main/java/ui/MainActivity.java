@@ -1,11 +1,16 @@
 package ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import algonquin.cst2335.emmanuelsandroidlabs.R;
@@ -15,6 +20,7 @@ import algonquin.cst2335.emmanuelsandroidlabs.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private MainViewModel model;
     private ActivityMainBinding variableBinding;
+    private MutableLiveData<Boolean> myBooleanVariable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,28 @@ public class MainActivity extends AppCompatActivity {
         {
             model.editString = variableBinding.myEditText.getText().toString();
             variableBinding.myEditText.setText("Your edit text has: " + model.editString);
+        });
+        myBooleanVariable.observe(this, new Observer<Boolean>() {
+
+            @Override
+            public void onChanged(Boolean newValue) {
+                CheckBox checkBox = findViewById(R.id.checkBox);
+              Switch switchButton = findViewById(R.id.switch1);
+              RadioButton radioButton = findViewById(R.id.radioButton);
+
+                checkBox.setChecked(newValue);
+                switchButton.setChecked(newValue);
+                radioButton.setChecked(newValue);
+                checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    myBooleanVariable.postValue(isChecked);
+                });
+                switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    myBooleanVariable.postValue(isChecked);
+                });
+                radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    myBooleanVariable.postValue(isChecked);
+                });
+            }
         });
     }
 }
