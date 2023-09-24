@@ -7,4 +7,10 @@ public class MainViewModel extends ViewModel {
     public String editString;
 
 
+    public CharSequence getEditString() {
+        return null;
+    }
+
+    public void setEditString(String toString) {
+    }
 }
