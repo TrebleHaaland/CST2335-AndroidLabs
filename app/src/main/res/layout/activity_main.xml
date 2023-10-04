@@ -39,6 +39,27 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toTopOf="@+id/button2" />
+
+    <ImageView
+        android:id="@+id/flagView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/flag"
+        app:layout_constraintStart_toBottomOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:ignore="MissingConstraints" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/spin_message"
+        app:layout_constraintBottom_toBottomOf="@+id/flagView"
+        app:layout_constraintEnd_toEndOf="@id/flagView"
+        app:layout_constraintTop_toTopOf="@+id/flagView"
+        tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
