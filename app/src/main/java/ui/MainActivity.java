@@ -1,18 +1,21 @@
 package ui;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import algonquin.cst2335.emmanuelsandroidlabs.R;
 import algonquin.cst2335.emmanuelsandroidlabs.data.MainViewModel;
@@ -22,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel model;
     private ActivityMainBinding variableBinding;
     private MutableLiveData<Boolean> myBooleanVariable;
+    private EditText editText;
+    private Button myButton;
+    private TextView displayTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +37,29 @@ public class MainActivity extends AppCompatActivity {
         variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(variableBinding.getRoot());
 
-        // Initialize myBooleanVariable
         myBooleanVariable = new MutableLiveData<>();
+        editText = variableBinding.myEditText;
+        myButton = variableBinding.myButton;
+        displayTextView = findViewById(R.id.textView); // Initialize the TextView
 
         variableBinding.textView.setText(model.getEditString());
+
+        // Clicking the radio button triggers checking the checkbox and switch
+        RadioButton radioButton = findViewById(R.id.radioButton);
+        radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CheckBox checkBox = findViewById(R.id.checkBox);
+                Switch switchButton = findViewById(R.id.switch1);
+                checkBox.setChecked(isChecked); // Check/uncheck the checkbox
+                switchButton.setChecked(isChecked); // Check/uncheck the switch
+            }
+        });
+
         variableBinding.myButton.setOnClickListener(click -> {
-            model.setEditString(variableBinding.myEditText.getText().toString());
-            variableBinding.myEditText.setText("Your edit text has: " + model.getEditString());
+            // Show what was written in the EditText
+            String text = editText.getText().toString();
+            displayTextView.setText("Text entered: " + text); // Update the TextView with entered text
         });
 
         myBooleanVariable.observe(this, isChecked -> {
@@ -58,50 +80,8 @@ public class MainActivity extends AppCompatActivity {
         myBooleanVariable.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isChecked) {
-                CheckBox checkBox = findViewById(R.id.checkBox);
-                Switch switchButton = findViewById(R.id.switch1);
-                RadioButton radioButton = findViewById(R.id.radioButton);
-
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        myBooleanVariable.postValue(isChecked);
-                    }
-                });
-                switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        myBooleanVariable.postValue(isChecked);
-                    }
-                });
-                radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        myBooleanVariable.postValue(isChecked);
-                    }
-                });
+                // Checkbox and switch behavior is handled by the radio button listener
             }
         });
     }
 }
-
-
-/**
- * setContentView(R.layout.activity_main);
-Button my_Button = findViewById(R.id.myButton);
-TextView my_textView = variableBinding.textView;
-EditText my_edittext = findViewById(R.id.myEditText);
-String editString = my_edittext.getText().toString();
-my_textView.setText("Your edit has:" + editString);
-my_Button.setOnClickListener(vw -> {
-    my_textView.setText("Your edit text has: " + editString);
-});
-if (my_Button != null) {
-    my_Button.setOnClickListener(v -> {
-
-    });
-}
-
-}
-}
- **/

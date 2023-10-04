@@ -9,6 +9,7 @@ android {
         viewBinding = true
     }
 
+
     defaultConfig {
         applicationId = "algonquin.cst2335.emmanuelsandroidlabs"
         minSdk = 22
