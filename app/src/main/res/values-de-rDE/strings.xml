@@ -1,6 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Emmanuel\'s Android Labs</string>
     <string name="hello_message">Your edit text has: </string>
     <string name="button_message">I\'m a button</string>
     <string name="hint_text">Write something here</string>
+    <string name="button2">Knopf 2</string>
+    <string name="button1">Knopf 1</string>
+    <string name="button3">Knopf 3</string>
+    <string name="spin_message">Drehen Sie die Flagge</string>
 </resources>
