@@ -42,17 +42,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Change Picture"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="265dp"
-        tools:layout_editor_absoluteY="168dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="248dp" />
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="198dp"
+        android:layout_height="160dp"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:layout_editor_absoluteX="108dp"
-        tools:layout_editor_absoluteY="184dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="191dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
