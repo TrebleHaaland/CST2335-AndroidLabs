@@ -10,10 +10,10 @@
         android:id="@+id/screen1Message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.64"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,38 +21,47 @@
         android:id="@+id/callNumberButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
         android:text="Call Number"
-        tools:layout_editor_absoluteX="284dp"
-        tools:layout_editor_absoluteY="93dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toTopOf="@+id/changePictureButton"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="284dp" />
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="217dp"
         android:layout_height="50dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="91dp"
         android:ems="10"
         android:hint="Enter Phone Number"
         android:inputType="phone"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="91dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/changePictureButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="388dp"
         android:text="Change Picture"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="265dp"
-        tools:layout_editor_absoluteY="248dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/picture"
         android:layout_width="198dp"
         android:layout_height="160dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="540dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="191dp" />
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
