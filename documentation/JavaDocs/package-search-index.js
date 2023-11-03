@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"algonquin.cst2335.emmanuelsandroidlabs"},{"l":"algonquin.cst2335.emmanuelsandroidlabs.data"},{"l":"All Packages","u":"allpackages-index.html"},{"l":"ui"}];updateSearchResults();
