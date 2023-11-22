@@ -1,6 +1,7 @@
 package algonquin.cst2335.emmanuelsandroidlabs;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,7 +37,6 @@ public class ChatRoom extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +45,13 @@ public class ChatRoom extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.sendButton.setOnClickListener(click -> {
-            String messageText = binding.editTextText.getText().toString();
+            String messageText = binding.sendEditText.getText().toString();
             sendMessage(messageText, true);
         });
 
         binding.receiveButton.setOnClickListener(click -> {
-            String messageText = binding.editTextText.getText().toString();
-            receiveMessage(messageText, true);
+            String messageText = binding.sendEditText.getText().toString();
+            receiveMessage(messageText, true); // Use false for received messages
         });
 
         myAdapter = new MyAdapter();
@@ -62,22 +62,25 @@ public class ChatRoom extends AppCompatActivity {
     private void sendMessage(String messageText, boolean isSentButton) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
         String currentDateAndTime = sdf.format(new Date());
-        ChatMessage chatMessage = new ChatMessage(messageText, currentDateAndTime, isSentButton);
+        ChatMessage chatMessage = new ChatMessage(messageText, currentDateAndTime, true,false);
         messages.add(chatMessage);
         myAdapter.notifyItemInserted(messages.size() - 1);
-        binding.editTextText.setText("");
+        binding.sendEditText.setText("");
 
+        binding.recycleView.scrollToPosition(messages.size() - 1);
     }
+
     private void receiveMessage(String messageText, boolean isReceivedButton) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
         String currentDateAndTime = sdf.format(new Date());
-        ChatMessage chatMessage = new ChatMessage(messageText, currentDateAndTime, isReceivedButton);
+        ChatMessage chatMessage = new ChatMessage(messageText, currentDateAndTime, false, true);
         messages.add(chatMessage);
         myAdapter.notifyItemInserted(messages.size() - 1);
-        binding.editTextText.setText("");
+        binding.sendEditText.setText("");
 
-
+        binding.recycleView.scrollToPosition(messages.size() - 1);
     }
+
 
     private class MyAdapter extends RecyclerView.Adapter<MyRowHolder> {
         @NonNull
@@ -98,14 +101,15 @@ public class ChatRoom extends AppCompatActivity {
             holder.messageText.setText(chatMessage.getMessage());
             holder.timeText.setText(chatMessage.getTimeSent());
 
-            // Set image based on isSentButton value
+            // Set image and gravity based on isSentButton value
             if (chatMessage.isSentButton()) {
                 holder.imageView.setImageResource(R.drawable.sent_message);
+                holder.messageText.setGravity(Gravity.END); // Align to the right
             } else {
                 holder.imageView.setImageResource(R.drawable.receive_message);
+                holder.messageText.setGravity(Gravity.START); // Align to the left
             }
         }
-
         @Override
         public int getItemCount() {
             return messages.size();

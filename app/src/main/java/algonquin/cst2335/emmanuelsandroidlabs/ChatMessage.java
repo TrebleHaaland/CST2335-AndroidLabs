@@ -5,11 +5,13 @@ public class ChatMessage {
     private String message;
     private String timeSent;
     private boolean isSentButton;
+    private  boolean isReceivedButton;
 
-    public ChatMessage(String m, String t, boolean sent) {
+    public ChatMessage(String m, String t, boolean sent, boolean receive) {
         message = m;
         timeSent = t;
         isSentButton = sent;
+        isReceivedButton = receive;
     }
 
     public String getMessage() {
@@ -23,4 +25,5 @@ public class ChatMessage {
     public boolean isSentButton() {
         return isSentButton;
     }
+    public  boolean isReceivedButton() {return isReceivedButton;}
 }

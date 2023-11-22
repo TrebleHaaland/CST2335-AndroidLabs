@@ -28,18 +28,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="300dp"
-        android:layout_height="62dp"
-        android:layout_marginBottom="80dp"
+        android:id="@+id/sendEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/recycleView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.693"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recycleView"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintVertical_bias="0.815" />
 
     <Button
         android:id="@+id/receive_button"
@@ -49,5 +47,6 @@
         android:text="Receive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
