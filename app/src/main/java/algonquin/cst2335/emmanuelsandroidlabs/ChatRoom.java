@@ -32,9 +32,10 @@ public class ChatRoom extends AppCompatActivity {
             super(itemView);
             messageText = itemView.findViewById(R.id.messageView);
             timeText = itemView.findViewById(R.id.timeView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.receive_image);
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class ChatRoom extends AppCompatActivity {
 
         binding.receiveButton.setOnClickListener(click -> {
             String messageText = binding.editTextText.getText().toString();
-            sendMessage(messageText, false);
+            receiveMessage(messageText, true);
         });
 
         myAdapter = new MyAdapter();
@@ -65,6 +66,17 @@ public class ChatRoom extends AppCompatActivity {
         messages.add(chatMessage);
         myAdapter.notifyItemInserted(messages.size() - 1);
         binding.editTextText.setText("");
+
+    }
+    private void receiveMessage(String messageText, boolean isReceivedButton) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+        String currentDateAndTime = sdf.format(new Date());
+        ChatMessage chatMessage = new ChatMessage(messageText, currentDateAndTime, isReceivedButton);
+        messages.add(chatMessage);
+        myAdapter.notifyItemInserted(messages.size() - 1);
+        binding.editTextText.setText("");
+
+
     }
 
     private class MyAdapter extends RecyclerView.Adapter<MyRowHolder> {
