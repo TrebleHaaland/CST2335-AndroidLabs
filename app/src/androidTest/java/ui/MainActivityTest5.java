@@ -1,6 +1,4 @@
 package ui;
-
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -28,23 +26,14 @@ import algonquin.cst2335.emmanuelsandroidlabs.R;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest2 {
+public class MainActivityTest5 {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void mainActivityTest2() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(5648);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+    public void mainActivityTest3() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.myEditText),
                         childAtPosition(
@@ -54,7 +43,7 @@ public class MainActivityTest2 {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Whereami"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Password1234#$"), closeSoftKeyboard());
     }
 
     private static Matcher<View> childAtPosition(
@@ -76,3 +65,4 @@ public class MainActivityTest2 {
         };
     }
 }
+

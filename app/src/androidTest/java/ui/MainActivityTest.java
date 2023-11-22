@@ -51,14 +51,14 @@ public class MainActivityTest {
 
         ViewInteraction editText = onView(
                 allOf(withId(R.id.myEditText),
-                        withParent(allOf(withId(R.id.linearLayout),
+                        withParent(allOf(withId(R.id.myEditText),
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
         editText.check(matches(withText("ALABItobi1")));
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.myEditText),
-                        withParent(allOf(withId(R.id.linearLayout),
+                        withParent(allOf(withId(R.id.myEditText),
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
         editText2.check(matches(withText("")));
@@ -66,7 +66,7 @@ public class MainActivityTest {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.myEditText),
                         childAtPosition(
-                                allOf(withId(R.id.linearLayout),
+                                allOf(withId(R.id.myEditText),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
@@ -77,7 +77,7 @@ public class MainActivityTest {
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.myEditText),
                         childAtPosition(
-                                allOf(withId(R.id.linearLayout),
+                                allOf(withId(R.id.myEditText),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
@@ -88,7 +88,7 @@ public class MainActivityTest {
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.myEditText),
                         childAtPosition(
-                                allOf(withId(R.id.linearLayout),
+                                allOf(withId(R.id.myEditText),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
