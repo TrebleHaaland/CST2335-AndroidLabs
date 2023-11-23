@@ -6,16 +6,16 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
+
+import static org.hamcrest.core.AllOf.allOf;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -24,6 +24,7 @@ import androidx.test.filters.LargeTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.jetbrains.annotations.Contract;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,63 +41,62 @@ public class MainActivityTest {
 
     @Test
     public void mainActivityTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(5123);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+        appCompatEditText.perform(replaceText("12345"), closeSoftKeyboard());
 
-        ViewInteraction editText = onView(
-                allOf(withId(R.id.myEditText),
-                        withParent(allOf(withId(R.id.myEditText),
-                                withParent(withId(android.R.id.content)))),
-                        isDisplayed()));
-        editText.check(matches(withText("ALABItobi1")));
+        ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
+        materialButton.perform(click());
 
-        ViewInteraction editText2 = onView(
-                allOf(withId(R.id.myEditText),
-                        withParent(allOf(withId(R.id.myEditText),
-                                withParent(withId(android.R.id.content)))),
-                        isDisplayed()));
-        editText2.check(matches(withText("")));
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.myEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.myEditText),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText.perform(click());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.myEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.myEditText),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText2.perform(click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.myEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.myEditText),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("AlabiTOBI"), closeSoftKeyboard());
+        ViewInteraction textView = onView((withId(R.id.textView) ));
+        textView.check(matches(withText("You shall not pass!")));
     }
 
+    @Test
+    public void testMissingUpperCase() {
+        ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+        appCompatEditText.perform(replaceText("alabitobi1"), closeSoftKeyboard());
+
+        ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
+        materialButton.perform(click());
+
+        ViewInteraction textView = onView((withId(R.id.textView) ));
+        textView.check(matches(withText("You shall not pass!")));
+    }
+        @Test
+        public void testMissingLowerCase() {
+            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            appCompatEditText.perform(replaceText("ALABITOBI1"), closeSoftKeyboard());
+
+            ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
+            materialButton.perform(click());
+
+            ViewInteraction textView = onView((withId(R.id.textView) ));
+            textView.check(matches(withText("You shall not pass!")));
+        }
+        @Test
+        public void testMissingNumeric() {
+            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            appCompatEditText.perform(replaceText("AlabiTOBI"), closeSoftKeyboard());
+
+            ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
+            materialButton.perform(click());
+
+            ViewInteraction textView = onView((withId(R.id.textView) ));
+            textView.check(matches(withText("You shall not pass!")));
+        }
+        @Test
+        public void testAllRequirementsMet() {
+            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            appCompatEditText.perform(replaceText("AlabiTOBI1!"), closeSoftKeyboard());
+            ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
+            materialButton.perform(click());
+
+            ViewInteraction textView = onView((withId(R.id.textView) ));
+            textView.check(matches(withText("Your password meets the requirements")));
+        }
+
+    @NonNull
+    @Contract("_, _ -> new")
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
