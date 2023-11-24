@@ -8,14 +8,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import algonquin.cst2335.emmanuelsandroidlabs.data.ChatMessageDAO;
+import algonquin.cst2335.emmanuelsandroidlabs.data.MessageDatabase;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.ActivityChatRoomBinding;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.ReceiveMessageBinding;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.SendMessageBinding;
@@ -28,9 +34,23 @@ public class ChatRoom extends AppCompatActivity {
     class MyRowHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText;
         ImageView imageView;
-
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(clk->{
+                int position = getAbsoluteAdapterPosition();
+                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+                builder.setMessage("Do you want to delete the message: "+ messageText.getText());
+                builder.setTitle("Question:");
+                builder.setNegativeButton("No", (dialog, cl) -> {});
+                builder.setPositiveButton("Yes", (dialog, cl)-> {
+                    ChatMessage m = messages.get(position);
+                    ChatMessageDAO mDAO = null;
+                    mDAO.deleteMessage (m);
+                    messages.remove(position);
+                    myAdapter.notifyItemRemoved(position);
+                });
+                builder.create().show();
+            });
             messageText = itemView.findViewById(R.id.messageView);
             timeText = itemView.findViewById(R.id.timeView);
             imageView = itemView.findViewById(R.id.receive_image);
@@ -57,6 +77,20 @@ public class ChatRoom extends AppCompatActivity {
         myAdapter = new MyAdapter();
         binding.recycleView.setAdapter(myAdapter);
         binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
+
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
+        ChatMessageDAO mDAO = db.cmDAO();
+        if(messages == null)
+        {
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() ->
+            {
+                messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
+
+                runOnUiThread( () ->  binding.recycleView.setAdapter( myAdapter )); //You can then load the RecyclerView
+            });
+        }
+
     }
 
     private void sendMessage(String messageText, boolean isSentButton) {
