@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,17 +41,20 @@ public class ChatRoom extends AppCompatActivity {
             itemView.setOnClickListener(clk->{
                 int position = getAbsoluteAdapterPosition();
                 AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
-                builder.setMessage("Do you want to delete the message: "+ messageText.getText());
-                builder.setTitle("Question:");
-                builder.setNegativeButton("No", (dialog, cl) -> {});
-                builder.setPositiveButton("Yes", (dialog, cl)-> {
-                    ChatMessage m = messages.get(position);
-                    ChatMessageDAO mDAO = null;
-                    mDAO.deleteMessage (m);
+                builder.setMessage("Do you want to delete the message: "+ messageText.getText())
+                .setTitle("Question:")
+                .setNegativeButton("No", (dialog, cl) -> {})
+                .setPositiveButton("Yes", (dialog, cl)-> {
+
                     messages.remove(position);
                     myAdapter.notifyItemRemoved(position);
-                });
-                builder.create().show();
+                    Snackbar.make(messageText, "You deleted message #"+ position,Snackbar.LENGTH_LONG)
+                            .setAction("Undo ?", click -> {
+                                messages.add(position, removedMessage);
+                                myAdapter.notifyItemInserted(position);
+                            })
+                            .show();
+                }).create().show();
             });
             messageText = itemView.findViewById(R.id.messageView);
             timeText = itemView.findViewById(R.id.timeView);

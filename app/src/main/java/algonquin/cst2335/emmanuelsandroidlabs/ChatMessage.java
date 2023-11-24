@@ -4,16 +4,16 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+    @Entity
 public class ChatMessage {
     @ColumnInfo (name = "message")
-    public String message;
+    protected String message;
     @ColumnInfo (name = "TimeSent")
-    private String timeSent;
+    protected String timeSent;
     @ColumnInfo (name = "SendButton")
-    private final boolean isSentButton;
+    protected final boolean isSentButton;
     @ColumnInfo (name = "ReceiveButton")
-    private  boolean isReceivedButton;
+    protected  boolean isReceivedButton;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     public int id;
