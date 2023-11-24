@@ -45,11 +45,11 @@ public class ChatRoom extends AppCompatActivity {
                 .setTitle("Question:")
                 .setNegativeButton("No", (dialog, cl) -> {})
                 .setPositiveButton("Yes", (dialog, cl)-> {
-
+                    ChatMessage removedMessage = messages.get(position);
                     messages.remove(position);
                     myAdapter.notifyItemRemoved(position);
                     Snackbar.make(messageText, "You deleted message #"+ position,Snackbar.LENGTH_LONG)
-                            .setAction("Undo ?", click -> {
+                            .setAction("Undo", click -> {
                                 messages.add(position, removedMessage);
                                 myAdapter.notifyItemInserted(position);
                             })
