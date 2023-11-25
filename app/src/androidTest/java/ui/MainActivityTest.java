@@ -41,7 +41,7 @@ public class MainActivityTest {
 
     @Test
     public void mainActivityTest() {
-        ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+        ViewInteraction appCompatEditText = onView(withId(R.id.myEditText));
         appCompatEditText.perform(replaceText("12345"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
@@ -53,7 +53,7 @@ public class MainActivityTest {
 
     @Test
     public void testMissingUpperCase() {
-        ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+        ViewInteraction appCompatEditText = onView(withId(R.id.myEditText));
         appCompatEditText.perform(replaceText("alabitobi1"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
@@ -64,7 +64,7 @@ public class MainActivityTest {
     }
         @Test
         public void testMissingLowerCase() {
-            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            ViewInteraction appCompatEditText = onView(withId(R.id.myEditText));
             appCompatEditText.perform(replaceText("ALABITOBI1"), closeSoftKeyboard());
 
             ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
@@ -75,7 +75,7 @@ public class MainActivityTest {
         }
         @Test
         public void testMissingNumeric() {
-            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            ViewInteraction appCompatEditText = onView(withId(R.id.myEditText));
             appCompatEditText.perform(replaceText("AlabiTOBI"), closeSoftKeyboard());
 
             ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
@@ -86,7 +86,7 @@ public class MainActivityTest {
         }
         @Test
         public void testAllRequirementsMet() {
-            ViewInteraction appCompatEditText = onView(withId(android.R.id.content));
+            ViewInteraction appCompatEditText = onView(withId(R.id.myEditText));
             appCompatEditText.perform(replaceText("AlabiTOBI1!"), closeSoftKeyboard());
             ViewInteraction materialButton = onView(allOf(withId(R.id.myButton) ));
             materialButton.perform(click());
