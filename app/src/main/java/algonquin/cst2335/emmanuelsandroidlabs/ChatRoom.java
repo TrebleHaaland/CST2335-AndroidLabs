@@ -8,13 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.concurrent.Executors;
 
 import algonquin.cst2335.emmanuelsandroidlabs.data.ChatMessageDAO;
 import algonquin.cst2335.emmanuelsandroidlabs.data.MessageDatabase;
+import algonquin.cst2335.emmanuelsandroidlabs.data.MessageDetailsFragment;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.ActivityChatRoomBinding;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.ReceiveMessageBinding;
 import algonquin.cst2335.emmanuelsandroidlabs.databinding.SendMessageBinding;
@@ -32,6 +32,7 @@ public class ChatRoom extends AppCompatActivity {
     ActivityChatRoomBinding binding;
     ArrayList<ChatMessage> messages = new ArrayList<>();
     private MyAdapter myAdapter;
+    ChatRoomViewModel chatModel;
 
     class MyRowHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText;
@@ -40,7 +41,9 @@ public class ChatRoom extends AppCompatActivity {
             super(itemView);
             itemView.setOnClickListener(clk->{
                 int position = getAbsoluteAdapterPosition();
-                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+                ChatMessage selected = messages.get(position);
+                chatModel.selectedMessage.postValue(selected);
+               /* AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
                 builder.setMessage("Do you want to delete the message: "+ messageText.getText())
                 .setTitle("Question:")
                 .setNegativeButton("No", (dialog, cl) -> {})
@@ -54,7 +57,7 @@ public class ChatRoom extends AppCompatActivity {
                                 myAdapter.notifyItemInserted(position);
                             })
                             .show();
-                }).create().show();
+                }).create().show(); */
             });
             messageText = itemView.findViewById(R.id.messageView);
             timeText = itemView.findViewById(R.id.timeView);
@@ -83,19 +86,30 @@ public class ChatRoom extends AppCompatActivity {
         binding.recycleView.setAdapter(myAdapter);
         binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
 
+
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
         ChatMessageDAO mDAO = db.cmDAO();
-        if(messages == null)
-        {
+        if (messages == null) {
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() ->
             {
-                messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
+                messages.addAll(mDAO.getAllMessages()); //Once you get the data from database
 
-                runOnUiThread( () ->  binding.recycleView.setAdapter( myAdapter )); //You can then load the RecyclerView
+                runOnUiThread(() -> binding.recycleView.setAdapter(myAdapter)); //You can then load the RecyclerView
             });
         }
+        if (chatModel != null && chatModel.selectedMessage != null) {
+            chatModel.selectedMessage.observe(this, (chatMessage) -> {
+                MessageDetailsFragment newMessage = new MessageDetailsFragment(chatMessage);
+                FragmentManager fMgr = getSupportFragmentManager();
+                FragmentTransaction transaction = fMgr.beginTransaction();
+                transaction.add(R.id.fragmentLocation, newMessage);
+                transaction.commit();
+            });
 
+        }else{
+
+        }
     }
 
     private void sendMessage(String messageText, boolean isSentButton) {

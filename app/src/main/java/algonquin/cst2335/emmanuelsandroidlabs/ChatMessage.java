@@ -16,7 +16,7 @@ public class ChatMessage {
     protected boolean isReceivedButton;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    public int id;
+    public long id;
     public ChatMessage(String message, String timeSent, boolean isSentButton, boolean isReceivedButton) {
         this.message = message;
         this.timeSent = timeSent;
